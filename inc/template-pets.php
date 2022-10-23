@@ -11,6 +11,9 @@ get_header(); ?>
             <th>Time</th>
             <th>Weight</th>
             <th>Color</th>
+            <?php if ( current_user_can('administrator') ) { ?>
+                <th>Delete</th>
+            <?php } ?>
         </tr>
 
         <?php
@@ -19,10 +22,19 @@ get_header(); ?>
 
           foreach ( $getPets->pets as $pet ) { ?>
             <tr>
-                <th><?php echo $pet->favGame ?></th>
-                <th><?php echo $pet->favTime ?></th>
-                <th><?php echo $pet->petWeight ?></th>
-                <th><?php echo $pet->favColor ?></th>
+                <td><?php echo $pet->favGame ?></td>
+                <td><?php echo $pet->favTime ?></td>
+                <td><?php echo $pet->petWeight ?></td>
+                <td><?php echo $pet->favColor ?></td>
+                <?php if ( current_user_can('administrator') ) { ?>
+                <td>
+                    <form action="<?php echo esc_html(admin_url('admin-post.php')) ?>" method="POST">
+                        <input type="hidden" name="action" value="deletePet">
+                        <input type="hidden" name="idTpDelete" value="<?php echo $pet->id; ?>">
+                        <button>X</button>
+                    </form>
+                </td>
+                <?php } ?>
             </tr>
           <?php }
         ?>
@@ -34,6 +46,7 @@ get_header(); ?>
   { ?>
       <form action="<?php echo esc_url(admin_url('admin-post.php')) ?>" method="POST">
           <p>Enter new name for the pet. so as others cam see that information before adopting</p>
+          <input type="hidden" name="action" value="createpet">
           <input type="text" name="incomingPetName" placeholder="name">
           <button>Add pet</button>
       </form>

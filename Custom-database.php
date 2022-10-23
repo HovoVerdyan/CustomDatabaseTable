@@ -22,6 +22,8 @@ class PetAdooptionPlugin {
 		add_action('activate_CustomDatabase/Custom-database.php', array($this, 'onActivation'));
 		add_action('admin_head', array($this, 'onAdminRefresh'));
 		add_action('wp_enqueue_scripts', array($this, 'loadScripts'));
+		add_action('admin_post_createpet', array($this, 'createPet'));
+		add_action('admin_post_nopriv_createpet', array($this, 'createPet'));
 		add_filter('template_include', array($this, 'loadTemplate'));
 	}
 
@@ -45,6 +47,20 @@ class PetAdooptionPlugin {
 	{
        global $wpdb;
 	   $wpdb->insert($this->tablename, generatePets());
+	}
+
+	public function createPet()
+	{
+	   if ( current_user_can('administrator') )
+	   {
+           $pet = generatePets();
+		   $pet['favColor'] = sanitize_text_field($_POST['incomingPetName']);
+		   global $wpdb;
+		   $wpdb->insert($this->tablename, $pet);
+		   wp_redirect(site_url('/pet-adoption'));
+	   } else {
+		   wp_redirect(site_url());
+	   }
 	}
 
 	public function loadScripts()
