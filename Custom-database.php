@@ -52,9 +52,13 @@ class PetAdooptionPlugin {
 
 	}
 
-	public function loadTemplate()
+	public function loadTemplate($template)
 	{
-
+      if ( is_page('pet-adoption') )
+      {
+		  return plugin_dir_path(__FILE__) . 'inc/template-pets.php';
+      }
+	  return $template;
 	}
 
 }
