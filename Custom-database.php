@@ -24,6 +24,8 @@ class PetAdooptionPlugin {
 		add_action('wp_enqueue_scripts', array($this, 'loadScripts'));
 		add_action('admin_post_createpet', array($this, 'createPet'));
 		add_action('admin_post_nopriv_createpet', array($this, 'createPet'));
+		add_action('admin_post_deletePet', array($this, 'deletePet'));
+		add_action('admin_post_nopriv_deletePet', array($this, 'deletePet'));
 		add_filter('template_include', array($this, 'loadTemplate'));
 	}
 
@@ -57,10 +59,24 @@ class PetAdooptionPlugin {
 		   $pet['favColor'] = sanitize_text_field($_POST['incomingPetName']);
 		   global $wpdb;
 		   $wpdb->insert($this->tablename, $pet);
-		   wp_redirect(site_url('/pet-adoption'));
+		   wp_safe_redirect(site_url('/pet-adoption'));
 	   } else {
-		   wp_redirect(site_url());
+		   wp_safe_redirect(site_url());
 	   }
+	}
+
+	public function deletePet()
+	{
+		if ( current_user_can('administrator') )
+		{
+			$id = sanitize_text_field($_POST['idToDelete']);
+			global $wpdb;
+			$wpdb->delete($this->tablename, ['id' => $id]);
+			wp_safe_redirect(site_url('/pet-adoption'));
+		} else {
+			wp_safe_redirect(site_url());
+		}
+		exit();
 	}
 
 	public function loadScripts()

@@ -9,7 +9,7 @@ class GetPets {
 		$this->args = $this->getArgs();
 	    $this->placeholders = $this->createPlaceholders();
 
-		$query = "SELECT favGame,favTime, petWeight, favColor FROM $tableName ";
+		$query = "SELECT id,favGame,favTime, petWeight, favColor FROM $tableName ";
 		$query .= $this->createWhereText();
 		$query .= " LIMIT 100";
 

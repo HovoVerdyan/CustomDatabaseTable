@@ -30,7 +30,7 @@ get_header(); ?>
                 <td>
                     <form action="<?php echo esc_html(admin_url('admin-post.php')) ?>" method="POST">
                         <input type="hidden" name="action" value="deletePet">
-                        <input type="hidden" name="idTpDelete" value="<?php echo $pet->id; ?>">
+                        <input type="hidden" name="idToDelete" value="<?php echo $pet->id; ?>">
                         <button>X</button>
                     </form>
                 </td>
