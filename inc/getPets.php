@@ -3,6 +3,8 @@
 class GetPets {
     public function __construct()
     {
+		add_action('', '');
+
 	    global $wpdb;
 	    $tableName = $wpdb->prefix . 'pets';
 
